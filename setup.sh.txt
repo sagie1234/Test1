@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Create the Docker network
+docker network create vpnnet
+
+# Create the Docker containers
+docker run -d --cap-add=NET_ADMIN --net vpnnet --name openvpn-europe kylemanna/openvpn
+docker run -d --cap-add=NET_ADMIN --net vpnnet --name openvpn-us kylemanna/openvpn
+
+# Setup the VPN tunnels and route traffic
+docker exec -it openvpn-europe sh -c 'echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf && sysctl -p'
+docker exec -it openvpn-us sh -c 'echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf && sysctl -p'
+

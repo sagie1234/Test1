@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Check the status of the Docker containers every 5 minutes
+while true; do
+    docker ps | grep openvpn-europe > /dev/null && echo "OpenVPN Europe is running" || echo "OpenVPN Europe is not running"
+    docker ps | grep openvpn-us > /dev/null && echo "OpenVPN US is running" || echo "OpenVPN US is not running"
+    sleep 300
+done
